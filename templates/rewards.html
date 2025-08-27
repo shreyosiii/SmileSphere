@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Rewards - SmileSphere{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-light-purple text-white">
+                <h3 class="mb-0"><i class="fas fa-gift me-2"></i>Rewards</h3>
+            </div>
+            <div class="card-body bg-skyblue">
+                {% if rewards %}
+                <div class="row g-4">
+                    {% for reward in rewards %}
+                    <div class="col-md-4">
+                        <div class="card h-100 shadow-sm">
+                            <img src="{{ url_for('static', filename='images/' + reward.image) }}" 
+                                 class="card-img-top reward-img" 
+                                 alt="{{ reward.name }}">
+                            <div class="card-body text-center d-flex flex-column bg-light-purple">
+                                <h5 class="card-title reward-title">{{ reward.name }}</h5>
+                                <p class="card-text reward-description">{{ reward.description }}</p>
+                                <span class="badge mb-3 font">{{ reward.cost }} Smile Coins</span>
+
+                                <!-- Redeem Button -->
+                                <form action="{{ url_for('redeem_reward', reward_id=reward.id) }}" method="POST" class="mt-auto">
+                                    <button type="submit" class="btn btn-success w-100">
+                                        <i class="fas fa-check-circle me-1"></i> Redeem Reward
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-muted">No rewards available at the moment.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Reward images */
+    .reward-img {
+        max-height: 180px;       /* make images smaller */
+        width: auto;             /* keep natural ratio */
+        object-fit: contain;     /* prevent cropping */
+        margin: 10px auto 0;     /* center image */
+        display: block;
+        border-radius: 10px;     /* rounded thumbnail look */
+        padding: 5px;
+        background: #f8f9fa;     /* light background behind image */
+    }
+
+    /* Reward text styling */
+    .reward-title {
+        font-weight: bold;
+        color: white;            /* white looks best on purple background */
+    }
+
+    .reward-description {
+        font-weight: bold;
+        color: skyblue;          /* description in skyblue for contrast */
+    }
+</style>
+{% endblock %}
