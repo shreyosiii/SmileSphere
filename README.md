@@ -45,7 +45,7 @@ SmileSphere is a web application that incentivizes users to share smiling photos
    ```
    pip install -r requirements.txt
    ```
-
+For models go to this link: https://drive.google.com/drive/folders/1LxAti19dPcLMaoPCaS7jcMjT2QJmFSaN?usp=drive_link
 4. Initialize the database:
    ```
    flask init-db
