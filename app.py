@@ -249,7 +249,13 @@ def community():
 @app.route('/leaderboard')
 def leaderboard():
     users = User.query.order_by(User.smile_coins.desc()).all()
-    return render_template('leaderboard.html', users=users)
+    # Filter out users who have 0 coins or 0 photos
+    filtered_users = [
+        user for user in users
+        if user.smile_coins > 0 and (hasattr(user, 'photos') and len(user.photos) > 0)
+    ]
+
+    return render_template('leaderboard.html', users=filtered_users)
 
 
 # ------------------ REWARDS ------------------
