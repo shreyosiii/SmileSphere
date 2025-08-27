@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}SmileSphere - Share Your Smile{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="row align-items-center py-5">
+        <div class="col-lg-6">
+            <h1 class="hero-title">Share Your Smile, <span class="text-accent">Earn Rewards</span></h1>
+            <p class="hero-subtitle my-4">
+                SmileSphere is a fun platform that rewards you for sharing your smile with the world. 
+                Upload your smiling photos, earn Smile Coins based on your smile quality, and redeem them for exciting rewards!
+            </p>
+            <div class="d-grid gap-3 d-md-flex justify-content-md-start">
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg px-4 me-md-2 rounded-pill">
+                    <i class="fas fa-camera me-2"></i>Share Your Smile
+                </a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+                    <i class="fas fa-tachometer-alt me-2"></i>Go to Dashboard
+                </a>
+                {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 me-md-2 rounded-pill">
+                    <i class="fas fa-user-plus me-2"></i>Join Now
+                </a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary btn-lg px-4 rounded-pill">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-6 d-none d-lg-block">
+            <div class="hero-image-container">
+                <img src="{{ url_for('static', filename='images/hero-image.svg') }}" alt="SmileSphere" class="img-fluid hero-image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="divider-icon"><div class="smile-3d"></div></div></div>
+
+<div class="how-it-works-section py-5">
+    <div class="col-12 text-center mb-5">
+        <h2 class="section-title">How It <span class="text-accent">Works</span></h2>
+    </div>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon-container mb-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="feature-title">1. Share Your Smile</h3>
+                    <p class="feature-text">Upload your best smiling photos or take a new one directly in the app.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon-container mb-4">
+                        <div class="feature-icon">
+                            <div class="smile-3d"></div>
+                        </div>
+                    </div>
+                    <h3 class="feature-title">2. AI Analysis</h3>
+                    <p class="feature-text">Our AI analyzes your smile and awards Smile Coins based on the quality of your smile.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="feature-icon-container mb-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-gift fa-2x"></i>
+                        </div>
+                    </div>
+                    <h3 class="feature-title">3. Redeem Rewards</h3>
+                    <p class="feature-text">Exchange your earned Smile Coins for various rewards and discounts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section-divider"><div class="divider-icon"><i class="fas fa-star"></i></div></div>
+
+<!-- Features Section -->
+<div class="features-section py-5">
+    <div class="col-12 text-center mb-5">
+        <h2 class="section-title">Amazing <span class="text-accent">Features</span></h2>
+    </div>
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-6">
+            <div class="mini-feature-card mb-4">
+                <div class="d-flex align-items-start">
+                    <div class="feature-icon bg-primary bg-gradient text-white me-3">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div>
+                        <h4 class="mini-feature-title">Secure Authentication</h4>
+                        <p class="mini-feature-text">Create your account and securely log in to access all features.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mini-feature-card mb-4">
+                <div class="d-flex align-items-start">
+                    <div class="feature-icon bg-primary bg-gradient text-white me-3">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div>
+                        <h4 class="mini-feature-title">Smile Coin Wallet</h4>
+                        <p>Track your earned Smile Coins in your personal wallet.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right Column -->
+        <div class="col-md-6">
+            <div class="mini-feature-card mb-4">
+                <div class="d-flex align-items-start">
+                    <div class="feature-icon bg-primary bg-gradient text-white me-3">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div>
+                        <h4>Leaderboard</h4>
+                        <p>Compete with others to reach the top of the leaderboard.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mini-feature-card mb-4">
+                <div class="d-flex align-items-start">
+                    <div class="feature-icon bg-primary bg-gradient text-white me-3">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div>
+                        <h4>Community</h4>
+                        <p>Share your photos with the community and interact with others.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row py-5 rounded-3 mt-4">
+    <div class="col-12 text-center">
+        <h2 class="fw-bold mb-4">Join SmileSphere Today!</h2>
+        <p class="lead mb-4">Start sharing your smile and earning rewards now.</p>
+        {% if not current_user.is_authenticated %}
+        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4">
+            <i class="fas fa-user-plus me-2"></i>Sign Up for Free
+        </a>
+        {% else %}
+        <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg px-4">
+            <i class="fas fa-camera me-2"></i>Share Your Smile
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

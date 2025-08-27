@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard - SmileSphere{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-purple text-white">
+                <h3 class="mb-0"><i class="fas fa-trophy me-2"></i>Smile Coins Leaderboard</h3>
+            </div>
+            <div class="card-body bg-skyblue">
+                {% if users %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Rank</th>
+                                <th scope="col">User</th>
+                                <th scope="col">Smile Coins</th>
+                                <th scope="col">Photos Shared</th>
+                                <th scope="col">Member Since</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr class="{% if current_user.is_authenticated and current_user.id == user.id %}table-primary{% endif %}">
+                                <td>
+                                    {% if loop.index == 1 %}
+                                    <i class="fas fa-trophy text-warning fa-lg"></i>
+                                    {% elif loop.index == 2 %}
+                                    <i class="fas fa-trophy text-secondary fa-lg"></i>
+                                    {% elif loop.index == 3 %}
+                                    <i class="fas fa-trophy text-danger fa-lg"></i>
+                                    {% else %}
+                                    {{ loop.index }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle bg-primary text-white me-2">
+                                            <span>{{ user.username[0].upper() }}</span>
+                                        </div>
+                                        <span>{{ user.username }}</span>
+                                        {% if current_user.is_authenticated and current_user.id == user.id %}
+                                        <span class="badge bg-info ms-2">You</span>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="fas fa-coins me-1"></i>{{ user.smile_coins }}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if user.photos is defined %}
+                                        {{ user.photos|length }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.created_at %}
+                                        {{ user.created_at.strftime('%B %d, %Y') }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-trophy fa-4x text-muted mb-3"></i>
+                    <h4>No Users Yet</h4>
+                    <p class="text-muted">Be the first to join and top the leaderboard!</p>
+                    {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('register') }}" class="btn btn-primary mt-2">
+                        <i class="fas fa-user-plus me-2"></i>Register Now
+                    </a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-light">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-info-circle me-2"></i>Leaderboard updates in real-time</span>
+                    {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                        <i class="fas fa-upload me-2"></i>Upload to Earn More
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

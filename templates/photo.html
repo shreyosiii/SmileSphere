@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Photo Details - SmileSphere{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <img src="{{ url_for('static', filename='images/uploads/' + photo.filename) }}" 
+                 class="card-img-top" alt="Smile Photo">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-primary text-white me-2">
+                            <span>{{ photo.user.username[0].upper() }}</span>
+                        </div>
+                        <h5 class="mb-0">{{ photo.user.username }}</h5>
+                    </div>
+                    <span class="badge bg-primary">Smile Score: {{ photo.smile_score }}/10</span>
+                </div>
+                <p class="text-muted">
+                    Shared on {{ photo.uploaded_at.strftime('%B %d, %Y at %H:%M') }}
+                </p>
+                
+                {% if current_user.is_authenticated %}
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <form method="POST" action="{{ url_for('add_reaction', photo_id=photo.id) }}" class="d-flex">
+                        <input type="hidden" name="reaction_type" value="like">
+                        <button type="submit" class="btn btn-sm btn-outline-danger me-2">
+                            {% set user_liked = photo.reactions|selectattr('user_id', 'equalto', current_user.id)|selectattr('reaction_type', 'equalto', 'like')|list|length > 0 %}
+                            <i class="fas fa-heart{% if not user_liked %}-broken{% endif %} me-1"></i>
+                            {{ 'Unlike' if user_liked else 'Like' }}
+                        </button>
+                    </form>
+                    <div>
+                        <span class="me-3">
+                            <i class="fas fa-heart text-danger me-1"></i>
+                            {{ photo.reactions|selectattr('reaction_type', 'equalto', 'like')|list|length }}
+                        </span>
+                        <span>
+                            <i class="fas fa-comment text-primary me-1"></i>
+                            {{ comments|length }}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-comments me-2"></i>Comments</h5>
+            </div>
+            <div class="card-body">
+                {% if current_user.is_authenticated %}
+                <form method="POST" action="{{ url_for('add_comment', photo_id=photo.id) }}" class="mb-4">
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Add a comment</label>
+                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane me-2"></i>Post Comment
+                        </button>
+                    </div>
+                </form>
+                {% endif %}
+                
+                <div class="comments-section">
+                    {% if comments %}
+                        {% for comment in comments %}
+                        <div class="comment mb-3">
+                            <div class="d-flex">
+                                <div class="avatar-circle bg-secondary text-white me-2">
+                                    <span>{{ comment.user.username[0].upper() }}</span>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-0">{{ comment.user.username }}</h6>
+                                        <small class="text-muted">{{ comment.created_at.strftime('%b %d, %Y') }}</small>
+                                    </div>
+                                    <p class="mb-0">{{ comment.content }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-3">
+                            <i class="fas fa-comment-slash fa-2x text-muted mb-2"></i>
+                            <p class="mb-0">No comments yet</p>
+                            {% if current_user.is_authenticated %}
+                            <p class="text-muted">Be the first to comment!</p>
+                            {% else %}
+                            <p class="text-muted">
+                                <a href="{{ url_for('login') }}">Login</a> to add a comment
+                            </p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Photo Info</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-user me-2"></i>Uploaded by</span>
+                        <span>{{ photo.user.username }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-smile me-2"></i>Smile Score</span>
+                        <span class="badge bg-primary">{{ photo.smile_score }}/10</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-coins me-2"></i>Coins Earned</span>
+                        <span class="text-warning">{{ photo.smile_score }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-calendar me-2"></i>Upload Date</span>
+                        <span>{{ photo.uploaded_at.strftime('%B %d, %Y') }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-globe me-2"></i>Visibility</span>
+                        <span class="badge {% if photo.public %}bg-success{% else %}bg-secondary{% endif %}">
+                            {{ 'Public' if photo.public else 'Private' }}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
